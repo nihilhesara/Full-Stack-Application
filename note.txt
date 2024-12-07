@@ -1,0 +1,19 @@
+CREATE REACT APPLICATION
+
+Create react app - npm create vite@latest
+npm install - go to created project and ru (npm i)
+To run the program - npm run dev
+
+
+THEORY 
+
+tsx - TypeScript XML 
+DOM (Document Object Model) - Hierarchice of tags
+React has 2 DOM's, 
+    1. Real DOM - if there is a odification in the document this rewrites the whole document.
+    2. Vertual DOM - infrom real DOM the place that modified so it updates only that point.
+
+
+SHORTCUT KEYS 
+
+ctrl + c - stop the server
