@@ -1,21 +1,53 @@
 package com.example.ticketing.backend.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+public class TicketDTO {
 
-import java.io.Serializable;
+    private int totalNoTickets;
+    private int ticketReleaseRate;
+    private int customerRetrievalRate;
+    private int maximumTicketCapacity;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+    // Getters and setters
 
-public class TicketDTO implements Serializable {
-    private  int totalNoTickets;
-    private  int ticketReleaseRate;
-    private  int customerRetrievalRate;
-    private  int maximumTicketCapacity;
+    public int getTotalNoTickets() {
+        return totalNoTickets;
+    }
+
+    public void setTotalNoTickets(int totalNoTickets) {
+        this.totalNoTickets = totalNoTickets;
+    }
+
+    public int getTicketReleaseRate() {
+        return ticketReleaseRate;
+    }
+
+    public void setTicketReleaseRate(int ticketReleaseRate) {
+        this.ticketReleaseRate = ticketReleaseRate;
+    }
+
+    public int getCustomerRetrievalRate() {
+        return customerRetrievalRate;
+    }
+
+    public void setCustomerRetrievalRate(int customerRetrievalRate) {
+        this.customerRetrievalRate = customerRetrievalRate;
+    }
+
+    public int getMaximumTicketCapacity() {
+        return maximumTicketCapacity;
+    }
+
+    public void setMaximumTicketCapacity(int maximumTicketCapacity) {
+        this.maximumTicketCapacity = maximumTicketCapacity;
+    }
+
+    @Override
+    public String toString() {
+        return "TicketDTO{" +
+                "totalNoTickets=" + totalNoTickets +
+                ", ticketReleaseRate=" + ticketReleaseRate +
+                ", customerRetrievalRate=" + customerRetrievalRate +
+                ", maximumTicketCapacity=" + maximumTicketCapacity +
+                '}';
+    }
 }
-

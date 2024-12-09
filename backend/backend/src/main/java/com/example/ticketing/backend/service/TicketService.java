@@ -6,21 +6,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class TicketService {
 
+    public String submitTicketDetails(TicketDTO ticketDTO) {
+        // Implement your logic here to process ticket details
+        // (e.g., save to a database, perform calculations, etc.)
+        System.out.println("Processing Ticket Details: " + ticketDTO.toString());
+        return "Ticket details submitted successfully.";
+    }
+
     public String startBackend() {
-        // Logic to start backend processes
-        System.out.println("Backend started successfully!");
-        return "Backend started successfully!";
+        // Implement your logic here for starting the backend
+        // (e.g., initialize resources, start threads, etc.)
+        System.out.println("Starting Backend...");
+        return "Backend started successfully.";
     }
 
     public String stopBackend() {
-        // Logic to stop backend processes
-        System.out.println("Backend stopped successfully!");
-        return "Backend stopped successfully!";
-    }
-
-    public String submitTicketDetails(TicketDTO ticketDTO) {
-        // Process the ticket details here
-        System.out.println(ticketDTO);
-        return "Ticket details submitted successfully!";
+        // Implement your logic here for stopping the backend
+        // (e.g., release resources, stop threads, etc.)
+        System.out.println("Stopping Backend...");
+        return "Backend stopped successfully.";
     }
 }
