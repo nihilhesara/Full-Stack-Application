@@ -1,29 +1,108 @@
 package com.example.ticketing.backend.service;
 
 import com.example.ticketing.backend.DTO.TicketDTO;
+import com.example.ticketing.backend.model.Customer;
+import com.example.ticketing.backend.model.Ticket;
+import com.example.ticketing.backend.model.TicketDetails;
+import com.example.ticketing.backend.model.Vendor;
+import com.example.ticketing.backend.repository.CustomerRepository;
+import com.example.ticketing.backend.repository.TicketDetailsRepository;
+import com.example.ticketing.backend.repository.TicketRepository;
+import com.example.ticketing.backend.repository.VendorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TicketService {
 
+    @Autowired
+    private TicketRepository ticketRepository;
+
+    @Autowired
+    private TicketDetailsRepository ticketDetailsRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private VendorRepository vendorRepository;
+
+    private ScheduledExecutorService scheduler;
+
     public String submitTicketDetails(TicketDTO ticketDTO) {
-        // Implement your logic here to process ticket details
-        // (e.g., save to a database, perform calculations, etc.)
-        System.out.println("Processing Ticket Details: " + ticketDTO.toString());
+        // Create and save TicketDetails entity
+        TicketDetails ticketDetails = new TicketDetails();
+        ticketDetails.setTotalTickets(ticketDTO.getTotalNoTickets());
+        ticketDetails.setTicketReleaseRate(ticketDTO.getTicketReleaseRate());
+        ticketDetails.setCustomerRetrievalRate(ticketDTO.getCustomerRetrievalRate());
+        ticketDetails.setMaximumTicketCapacity(ticketDTO.getMaximumTicketCapacity());
+
+        ticketDetailsRepository.save(ticketDetails);
+
+        int totalNoTickets = ticketDTO.getTotalNoTickets();
+        int ticketReleaseRate = ticketDTO.getTicketReleaseRate();
+
+        for (int i = 0; i < totalNoTickets; i++) {
+            Ticket ticket = new Ticket();
+            ticket.setDetails("Ticket " + (i + 1));
+            ticket.setSold(false);
+            ticketRepository.save(ticket);
+            try {
+                Thread.sleep(1000 / ticketReleaseRate);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         return "Ticket details submitted successfully.";
     }
 
     public String startBackend() {
-        // Implement your logic here for starting the backend
-        // (e.g., initialize resources, start threads, etc.)
-        System.out.println("Starting Backend...");
+        if (scheduler == null || scheduler.isShutdown()) {
+            scheduler = Executors.newScheduledThreadPool(4);
+            List<Customer> customers = customerRepository.findAll();
+            List<Vendor> vendors = vendorRepository.findAll();
+
+            vendors.forEach(vendor -> scheduler.scheduleAtFixedRate(() -> {
+                Ticket ticket = new Ticket();
+                ticket.setDetails("New Ticket from Vendor " + vendor.getName());
+                ticket.setSold(false);
+                ticketRepository.save(ticket);
+                System.out.println("Vendor " + vendor.getName() + " added a ticket.");
+            }, 0, 1, TimeUnit.SECONDS));
+
+            customers.forEach(customer -> scheduler.scheduleAtFixedRate(() -> {
+                Optional<Ticket> optionalTicket = ticketRepository.findAll()
+                        .stream()
+                        .filter(ticket -> !ticket.isSold())
+                        .findFirst();
+                if (optionalTicket.isPresent()) {
+                    Ticket ticket = optionalTicket.get();
+                    ticket.setSold(true);
+                    ticketRepository.save(ticket);
+                    System.out.println("Customer bought a ticket.");
+                }
+            }, 0, 1, TimeUnit.SECONDS));
+        }
+
         return "Backend started successfully.";
     }
 
     public String stopBackend() {
-        // Implement your logic here for stopping the backend
-        // (e.g., release resources, stop threads, etc.)
-        System.out.println("Stopping Backend...");
+        if (scheduler != null && !scheduler.isShutdown()) {
+            scheduler.shutdown();
+            try {
+                scheduler.awaitTermination(5, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         return "Backend stopped successfully.";
     }
 }

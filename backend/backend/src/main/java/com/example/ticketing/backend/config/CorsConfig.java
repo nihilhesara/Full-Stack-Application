@@ -13,11 +13,11 @@ public class CorsConfig implements WebMvcConfigurer {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**") // Apply CORS to all endpoints under /api
-                        .allowedOrigins("http://localhost:3000") // Allow requests from your React app
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allowed HTTP methods
-                        .allowedHeaders("*") // Allowed headers (you can restrict this if needed)
-                        .allowCredentials(true); // Allow sending cookies (if necessary)
+                registry.addMapping("/api/**")
+                        .allowedOrigins("http://localhost:5173")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }

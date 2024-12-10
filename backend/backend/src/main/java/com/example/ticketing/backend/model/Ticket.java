@@ -8,16 +8,41 @@ import jakarta.persistence.Id;
 import lombok.*;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Ticket {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonProperty("availableTickets")
-    private int availableTickets;
+    @JsonProperty("details")
+    private String details;
+    @JsonProperty("sold")
+    private boolean sold;
 
+    // Getters and setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public boolean isSold() {
+        return sold;
+    }
+
+    public void setSold(boolean sold) {
+        this.sold = sold;
+    }
 }
 
