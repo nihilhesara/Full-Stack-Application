@@ -1,17 +1,58 @@
-// src/App.tsx
 import React, { useState } from 'react';
 import './App.css';
+import { sendTicketDetails, startBackend, stopBackend } from './api';
 
 const App: React.FC = () => {
-  const [totalTicket, setTotalTicket] = useState('');
-  const [releaseRate, setReleaseRate] = useState('');
-  const [retrievalRate, setRetrievalRate] = useState('');
-  const [maxTicketCapacity, setMaxTicketCapacity] = useState('');
+  const [totalNoTickets, setTotalNoTickets] = useState<string>('');
+  const [ticketReleaseRate, setTicketReleaseRate] = useState<string>('');
+  const [customerRetrievalRate, setCustomerRetrievalRate] = useState<string>('');
+  const [maximumTicketCapacity, setMaximumTicketCapacity] = useState<string>('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, setState: React.Dispatch<React.SetStateAction<string>>) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value)) {  // Regex to allow only integer values
+    if (/^\d*$/.test(value)) {
       setState(value);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const ticketDetails = {
+      totalNoTickets: parseInt(totalNoTickets),
+      ticketReleaseRate: parseInt(ticketReleaseRate),
+      customerRetrievalRate: parseInt(customerRetrievalRate),
+      maximumTicketCapacity: parseInt(maximumTicketCapacity),
+    };
+    try {
+      const response = await sendTicketDetails(ticketDetails);
+      console.log('Ticket details submitted successfully', response.data);
+    } catch (error) {
+      console.error('Error submitting ticket details', error);
+    }
+  };
+
+  const handleClear = () => {
+    setTotalNoTickets('');
+    setTicketReleaseRate('');
+    setCustomerRetrievalRate('');
+    setMaximumTicketCapacity('');
+  };
+
+  const handleStart = async () => {
+    try {
+      const response = await startBackend();
+      console.log('Backend started successfully', response.data);
+    } catch (error) {
+      console.error('Error starting backend', error);
+    }
+  };
+
+  const handleStop = async () => {
+    try {
+      const response = await stopBackend();
+      console.log('Backend stopped successfully', response.data);
+    } catch (error) {
+      console.error('Error stopping backend', error);
     }
   };
 
@@ -23,55 +64,57 @@ const App: React.FC = () => {
 
       <div className="button-container">
         <div className="row">
-          <button className="start-button">Start</button>
-          <button className="stop-button">Stop</button>
+          <button className="start-button" onClick={handleStart}>Start</button>
+          <button className="stop-button" onClick={handleStop}>Stop</button>
         </div>
         <button className="config-button">Configuration</button>
       </div>
 
       <div className="Form">
-        <fieldset>
-          <legend>Ticket Details</legend>
+        <form onSubmit={handleSubmit}>
+          <fieldset>
+            <legend>Ticket Details</legend>
 
-          <label htmlFor="totalTicket">Total Number of Tickets</label>
-          <input
-            type="text"
-            id="totalTicket"
-            placeholder="Enter total ticket count"
-            value={totalTicket}
-            onChange={(e) => handleInputChange(e, setTotalTicket)}
-          />
+            <label htmlFor="totalNoTickets">Total Number of Tickets</label>
+            <input
+              type="text"
+              id="totalNoTickets"
+              placeholder="Enter total ticket count"
+              value={totalNoTickets}
+              onChange={(e) => handleInputChange(e, setTotalNoTickets)}
+            />
 
-          <label htmlFor="releaseRate">Ticket Release Rate</label>
-          <input
-            type="text"
-            id="releaseRate"
-            placeholder="Enter release rate"
-            value={releaseRate}
-            onChange={(e) => handleInputChange(e, setReleaseRate)}
-          />
+            <label htmlFor="ticketReleaseRate">Ticket Release Rate</label>
+            <input
+              type="text"
+              id="ticketReleaseRate"
+              placeholder="Enter release rate"
+              value={ticketReleaseRate}
+              onChange={(e) => handleInputChange(e, setTicketReleaseRate)}
+            />
 
-          <label htmlFor="retrievalRate">Customer Retrieval Rate</label>
-          <input
-            type="text"
-            id="retrievalRate"
-            placeholder="Enter retrieval rate"
-            value={retrievalRate}
-            onChange={(e) => handleInputChange(e, setRetrievalRate)}
-          />
+            <label htmlFor="customerRetrievalRate">Customer Retrieval Rate</label>
+            <input
+              type="text"
+              id="customerRetrievalRate"
+              placeholder="Enter retrieval rate"
+              value={customerRetrievalRate}
+              onChange={(e) => handleInputChange(e, setCustomerRetrievalRate)}
+            />
 
-          <label htmlFor="maxTicketCapacity">Maximum Ticket Capacity</label>
-          <input
-            type="text"
-            id="maxTicketCapacity"
-            placeholder="Enter maximum ticket capacity"
-            value={maxTicketCapacity}
-            onChange={(e) => handleInputChange(e, setMaxTicketCapacity)}
-          />
+            <label htmlFor="maximumTicketCapacity">Maximum Ticket Capacity</label>
+            <input
+              type="text"
+              id="maximumTicketCapacity"
+              placeholder="Enter maximum ticket capacity"
+              value={maximumTicketCapacity}
+              onChange={(e) => handleInputChange(e, setMaximumTicketCapacity)}
+            />
 
-          <input type="submit" value="Send" className="submit-button" />
-          <input type="reset" value="Clear" className="reset-button" />
-        </fieldset>
+            <input type="submit" value="Send" className="submit-button" />
+            <input type="button" value="Clear" className="reset-button" onClick={handleClear} />
+          </fieldset>
+        </form>
       </div>
     </div>
   );
