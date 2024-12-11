@@ -1,10 +1,11 @@
-/* src/App.css */
+/* Sets the background color of the body to light grey, removes margins, and sets the font */
 body {
   background-color: lightgrey;
   margin: 0;
   font-family: 'Arial', sans-serif;
 }
 
+/* Styles the main container */
 .App {
   display: flex;
   flex-direction: column;
@@ -16,11 +17,13 @@ body {
   text-align: center;
 }
 
+/* Styles the heading section */
 .Heading {
   margin-bottom: 20px;
   color: black;
 }
 
+/* Styles the container for buttons */
 .button-container {
   display: flex;
   flex-direction: column;
@@ -29,6 +32,7 @@ body {
   margin-bottom: 20px;
 }
 
+/* Styles the rows of buttons */
 .row {
   display: flex;
   gap: 10px;
@@ -36,6 +40,7 @@ body {
   justify-content: center;
 }
 
+/* Base styles for all buttons */
 button {
   padding: 10px 20px;
   font-size: 16px;
@@ -45,26 +50,54 @@ button {
   transition: background-color 0.3s, transform 0.2s;
 }
 
+/* Styles for buttons when hovered */
 button:hover {
   opacity: 0.8;
   transform: translateY(-2px);
 }
 
+/* Specific styles for start button */
 .start-button {
   background-color: green;
   color: white;
 }
 
+/* Specific styles for stop button */
 .stop-button {
   background-color: red;
   color: white;
 }
 
+/* Specific styles for config button */
 .config-button {
-  background-color: yellow;
-  color: black;
+  background-color: orange; /* Changed from yellow */
+  color: white; /* Changed from black */
 }
 
+/* Specific styles for load button */
+.load-button {
+  background-color: purple;
+  color: white;
+}
+
+/* Styles for buttons in config and load popups */
+.config-load-button {
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Styles for config and load buttons when hovered */
+.config-load-button:hover {
+  opacity: 0.8;
+  transform: translateY(-2px);
+}
+
+/* Styles for the form container */
 .Form {
   display: flex;
   flex-direction: column;
@@ -77,6 +110,7 @@ button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Styles for fieldset elements */
 fieldset {
   width: 100%;
   border: 1px solid #ccc;
@@ -86,6 +120,7 @@ fieldset {
   background-color: white;
 }
 
+/* Styles for legend elements */
 legend {
   font-size: 1.2em;
   margin-bottom: 10px;
@@ -94,6 +129,7 @@ legend {
   color: black;
 }
 
+/* Styles for labels */
 label {
   display: block;
   margin: 10px 0 5px;
@@ -101,6 +137,7 @@ label {
   color: #333;
 }
 
+/* Styles for text input fields */
 input[type="text"] {
   width: calc(100% - 20px);
   padding: 10px;
@@ -109,15 +146,10 @@ input[type="text"] {
   border-radius: 5px;
   box-sizing: border-box;
   font-size: 16px;
-  background-color: #f0f0f0; /* matching color with the website */
-  color: #333; /* darker text color */
+  transition: background-color 0.3s, transform 0.2s;
 }
 
-input[type="text"]:focus {
-  border-color: #007BFF;
-  outline: none;
-}
-
+/* Styles for submit and reset buttons */
 input[type="submit"],
 input[type="reset"] {
   padding: 10px 20px;
@@ -126,46 +158,82 @@ input[type="reset"] {
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s, transform 0.2s;
-  margin-top: 10px;
-  margin-right: 10px; /* add space between submit and reset buttons */
 }
 
-input[type="submit"]:hover {
-  background-color: #0056b3;
+/* Specific styles for submit button */
+input[type="submit"] {
+  background-color: #007BFF;
+  color: white;
+  margin-right: 10px;
+}
+
+/* Specific styles for reset button */
+input[type="reset"] {
+  background-color: #dc3545;
   color: white;
 }
 
+/* Styles for submit and reset buttons when hovered */
+input[type="submit"]:hover,
 input[type="reset"]:hover {
-  background-color: #505050; /* matching color for reset button hover */
-  color: white;
+  opacity: 0.8;
+  transform: translateY(-2px);
 }
 
-.submit-button {
-  background-color: blue;
+/* Styles for close button */
+.close-button {
+  background-color: #dc3545;
   color: white;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
-.reset-button {
-  background-color: grey;
-  color: white;
+/* Styles for popups */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 1000;
 }
 
-@media (max-width: 600px) {
-  .button-container {
-    gap: 20px;
-  }
+/* Styles for form popups */
+.popup-form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 1000;
+  width: 90%;
+  max-width: 500px;
+}
 
-  .row {
-    flex-direction: column;
-    gap: 10px;
-  }
+/* Styles for form content inside popups */
+.form-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 
-  button {
-    width: 100%;
-    max-width: 200px;
-  }
-
-  .Form {
-    padding: 0 10px;
-  }
+/* Styles for preformatted text */
+pre {
+  text-align: left;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
