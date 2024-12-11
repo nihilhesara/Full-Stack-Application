@@ -6,13 +6,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+/**
+ * This class represents a Vendor entity in the ticketing system.
+ * It is annotated with @Entity to indicate that it is a JPA entity.
+ */
 @Entity
 public class Vendor {
 
+    // The unique identifier for the Vendor, generated automatically
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // The name of the Vendor, mapped to the "name" JSON property
     @JsonProperty("name")
     private String name;
 

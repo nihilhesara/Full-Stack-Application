@@ -18,9 +18,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * This service class contains the business logic for managing tickets,
+ * including submitting ticket details, starting the backend, and stopping the backend.
+ */
 @Service
 public class TicketService {
 
+    // Autowired repositories to interact with the database
     @Autowired
     private TicketRepository ticketRepository;
 
@@ -33,8 +38,9 @@ public class TicketService {
     @Autowired
     private VendorRepository vendorRepository;
 
+    // Scheduler to manage periodic tasks
     private ScheduledExecutorService scheduler;
-
+    
     public String submitTicketDetails(TicketDTO ticketDTO) {
         // Create and save TicketDetails entity
         TicketDetails ticketDetails = new TicketDetails();
@@ -48,6 +54,7 @@ public class TicketService {
         int totalNoTickets = ticketDTO.getTotalNoTickets();
         int ticketReleaseRate = ticketDTO.getTicketReleaseRate();
 
+        // Create and save each ticket with a delay based on the ticket release rate
         for (int i = 0; i < totalNoTickets; i++) {
             Ticket ticket = new Ticket();
             ticket.setDetails("Ticket " + (i + 1));
@@ -69,6 +76,7 @@ public class TicketService {
             List<Customer> customers = customerRepository.findAll();
             List<Vendor> vendors = vendorRepository.findAll();
 
+            // Schedule tasks for vendors to add new tickets
             vendors.forEach(vendor -> scheduler.scheduleAtFixedRate(() -> {
                 Ticket ticket = new Ticket();
                 ticket.setDetails("New Ticket from Vendor " + vendor.getName());
@@ -77,6 +85,7 @@ public class TicketService {
                 System.out.println("Vendor " + vendor.getName() + " added a ticket.");
             }, 0, 1, TimeUnit.SECONDS));
 
+            // Schedule tasks for customers to buy tickets
             customers.forEach(customer -> scheduler.scheduleAtFixedRate(() -> {
                 Optional<Ticket> optionalTicket = ticketRepository.findAll()
                         .stream()
