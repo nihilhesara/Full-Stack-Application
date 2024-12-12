@@ -40,7 +40,7 @@ public class TicketService {
 
     // Scheduler to manage periodic tasks
     private ScheduledExecutorService scheduler;
-    
+
     public String submitTicketDetails(TicketDTO ticketDTO) {
         // Create and save TicketDetails entity
         TicketDetails ticketDetails = new TicketDetails();
